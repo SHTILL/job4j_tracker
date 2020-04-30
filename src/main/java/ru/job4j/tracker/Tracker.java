@@ -35,20 +35,11 @@ public class Tracker {
     }
 
     /**
-     * Method return all non-null values from the internal storage
-     * @return arrays of items from the storage cleared from null elements
+     * Method return all non-null items(all items before this.position) from the internal storage
+     * @return arrays of items from the storage before this.position
      */
     public Item[] findAll() {
-        Item[] itemsWithoutNull = new Item[this.position];
-        int size = 0;
-        for (int i = 0; i < this.position; i++ ) {
-            if (this.items[i] != null) {
-                itemsWithoutNull[size] = this.items[i];
-                size++;
-            }
-        }
-        itemsWithoutNull = Arrays.copyOf(itemsWithoutNull, size);
-        return  itemsWithoutNull;
+        return  Arrays.copyOf(this.items, this.position);
     }
 
     /**
@@ -77,8 +68,9 @@ public class Tracker {
         Item[] itemsWithName = new Item[this.position];
         int size = 0;
         for (int i = 0; i < this.position; i++ ) {
-            if (this.items[i] != null && (this.items[i].getName().equals(key))) {
-                itemsWithName[size] = this.items[i];
+            Item current = this.items[i];
+            if (current != null && (current.getName().equals(key))) {
+                itemsWithName[size] = current;
                 size++;
             }
         }
