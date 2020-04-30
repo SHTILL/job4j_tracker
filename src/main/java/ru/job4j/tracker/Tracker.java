@@ -24,6 +24,22 @@ public class Tracker {
     }
 
     /**
+     * Method search for the item with a given id and return its index
+     * @param id to be found
+     * @return index of found item if item exists, -1 otherwise
+     */
+    private int indexOf(String id) {
+        int rsl = -1;
+        for (int index = 0; index < position; index++) {
+            if (items[index].getId().equals(id)) {
+                rsl = index;
+                break;
+            }
+        }
+        return rsl;
+    }
+
+    /**
      * Method store item into internal storage
      * @param item item to store
      * @return item that was stored
@@ -48,15 +64,8 @@ public class Tracker {
      * @return found item if exists, null otherwise
      */
     public Item findById(String id) {
-        Item rsl = null;
-        for (int index = 0; index < position; index++) {
-            Item current = items[index];
-            if (current.getId().equals(id)) {
-                rsl = current;
-                break;
-            }
-        }
-        return rsl;
+        int index = indexOf(id);
+        return index != -1 ? items[index] : null;
     }
 
     /**
@@ -76,5 +85,21 @@ public class Tracker {
         }
         itemsWithName = Arrays.copyOf(itemsWithName, size);
         return  itemsWithName;
+    }
+
+    /**
+     * Replace item with given id with item passed in parameters. Keep existing id.
+     * @param id of item to be replaced
+     * @param item item to replace saved item
+     * @return true if item was replaces, false is item was not found
+     */
+    public boolean replace(String id, Item item) {
+        int index = indexOf(id);
+        if (index == -1) {
+            return false;
+        }
+        item.setId(id);
+        items[index] = item;
+        return true;
     }
 }

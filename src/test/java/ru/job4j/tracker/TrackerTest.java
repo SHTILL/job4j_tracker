@@ -90,4 +90,35 @@ public class TrackerTest {
         Item[] result = tracker.findByName("test3");
         assertEquals(0, result.length);
     }
+
+    @Test
+    public void whenReplacedWithoutErrors() {
+        Tracker tracker = new Tracker();
+        Item saved = new Item("saved");
+        tracker.add(saved);
+        String idSaved = saved.getId();
+        Item replace = new Item("replaced");
+        assertTrue(tracker.replace(idSaved, replace));
+        Item[] result = tracker.findByName("saved");
+        assertEquals(0, result.length);
+        result = tracker.findByName("replaced");
+        assertEquals(1, result.length);
+        assertEquals(idSaved, result[0].getId());
+    }
+
+    @Test
+    public void whenReplacedNotFound() {
+        Tracker tracker = new Tracker();
+        Item saved = new Item("saved");
+        tracker.add(saved);
+        String idSaved = saved.getId();
+        String idFake = "123";
+        Item replace = new Item("replaced");
+        assertFalse(tracker.replace(idFake, replace));
+        Item[] result = tracker.findByName("saved");
+        assertEquals(1, result.length);
+        assertEquals(idSaved, result[0].getId());
+        result = tracker.findByName("replaced");
+        assertEquals(0, result.length);
+    }
 }
