@@ -121,4 +121,14 @@ public class TrackerTest {
         result = tracker.findByName("replaced");
         assertEquals(0, result.length);
     }
+
+    @Test
+    public void whenDelete() {
+        Tracker tracker = new Tracker();
+        Item bug = new Item("Bug");
+        tracker.add(bug);
+        String id = bug.getId();
+        assertTrue(tracker.delete(id));
+        assertNull(tracker.findById(id));
+    }
 }

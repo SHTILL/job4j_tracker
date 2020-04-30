@@ -102,4 +102,20 @@ public class Tracker {
         items[index] = item;
         return true;
     }
+
+    /**
+     * Delete item with given id
+     * @param id of item to be deleted
+     * @return true if item was deleted, false is item was not found
+     */
+    public boolean delete(String id) {
+        int index = indexOf(id);
+        if (index == -1) {
+            return false;
+        }
+        System.arraycopy(items, (index + 1), items, index, (position - index - 1));
+        items[position - 1] = null;
+        position--;
+        return true;
+    }
 }
