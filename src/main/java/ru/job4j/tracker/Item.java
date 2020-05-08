@@ -25,4 +25,8 @@ public class Item {
     public void setName(String name) {
         this.name = name;
     }
+
+    public String toString() {
+        return "\"" + this.name + "\" id(" +  this.id + ")";
+    }
 }

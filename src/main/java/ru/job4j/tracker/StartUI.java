@@ -25,7 +25,8 @@ public class StartUI {
                 System.out.println("=== Stored Items ====");
                 Item[] stored = tracker.findAll();
                 for (int i = 0; i < stored.length; i++) {
-                    System.out.println("Item" + i + ": \"" + stored[i].getName() + "\" id(" +  stored[i].getId() + ")");
+                    System.out.print("Item" + i + ": ");
+                    System.out.println(stored[i]);
                 }
             } else if (select == 2) {
                 System.out.println("=== Edit Item ====");
@@ -54,7 +55,8 @@ public class StartUI {
                 String id = scanner.nextLine();
                 Item item = tracker.findById(id);
                 if ( item != null ) {
-                    System.out.println("Item" + ": \"" + item.getName() + "\" id(" +  item.getId() + ")");
+                    System.out.print("Item: ");
+                    System.out.println(item);
                 } else {
                     System.out.print("Error. Probably wrong id was entered.");
                 }
@@ -64,7 +66,8 @@ public class StartUI {
                 String name = scanner.nextLine();
                 Item[] found = tracker.findByName(name);
                 for (int i = 0; i < found.length; i++) {
-                    System.out.println("Item" + i + ": \"" + found[i].getName() + "\" id(" +  found[i].getId() + ")");
+                    System.out.print("Item" + i + ": ");
+                    System.out.println(found[i]);
                 }
             } else if (select == 6) {
                 run = false;
@@ -82,7 +85,6 @@ public class StartUI {
         System.out.println("5. Find items by name");
         System.out.println("6. Exit Program");
     }
-
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
