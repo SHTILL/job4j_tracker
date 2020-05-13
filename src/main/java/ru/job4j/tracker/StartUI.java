@@ -3,14 +3,14 @@ package ru.job4j.tracker;
 import java.util.Scanner;
 
 public class StartUI {
-    private static void createItem(Input input, Tracker tracker) {
+    public static void createItem(Input input, Tracker tracker) {
         System.out.println("=== Create a new Item ====");
         String name = input.askStr("Enter name: ");
         Item item = new Item(name);
         tracker.add(item);
     }
 
-    private static void createShowStoredItems(Input input, Tracker tracker) {
+    public static void createShowStoredItems(Input input, Tracker tracker) {
         System.out.println("=== Stored Items ====");
         Item[] stored = tracker.findAll();
         for (int i = 0; i < stored.length; i++) {
@@ -19,7 +19,7 @@ public class StartUI {
         }
     }
 
-    private static void replaceItem(Input input, Tracker tracker) {
+    public static void replaceItem(Input input, Tracker tracker) {
         System.out.println("=== Edit Item ====");
         String id = input.askStr("Enter id: ");
         String name = input.askStr("Enter new name: ");
@@ -31,7 +31,7 @@ public class StartUI {
         }
     }
 
-    private static void deleteItem(Input input, Tracker tracker) {
+    public static void deleteItem(Input input, Tracker tracker) {
         System.out.println("=== Delete Item ====");
         String id = input.askStr("Enter id: ");
         if (tracker.delete(id)) {
@@ -41,7 +41,7 @@ public class StartUI {
         }
     }
 
-    private static void findItemById(Input input, Tracker tracker) {
+    public static void findItemById(Input input, Tracker tracker) {
         System.out.println("=== Find Item by Id====");
         String id = input.askStr("Enter id: ");
         Item item = tracker.findById(id);
@@ -53,7 +53,7 @@ public class StartUI {
         }
     }
 
-    private static void findItemByName(Input input, Tracker tracker) {
+    public static void findItemByName(Input input, Tracker tracker) {
         System.out.println("=== Find Items by Name====");
         String name = input.askStr("Enter name: ");
         Item[] found = tracker.findByName(name);
