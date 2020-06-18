@@ -1,17 +1,14 @@
 package ru.job4j.tracker;
 
-import java.util.Arrays;
+import java.util.List;
+import java.util.ArrayList;
 import java.util.Random;
 
 public class Tracker {
     /**
      * Массив для хранения заявок.
      */
-    private final Item[] items = new Item[100];
-    /**
-     * Указатель ячейки для новой заявки.
-     */
-    private int position = 0;
+    private final List<Item> items = new ArrayList<>();
 
     /**
      * Метод генерирует уникальный ключ для заявки.
@@ -30,9 +27,9 @@ public class Tracker {
      */
     private int indexOf(String id) {
         int rsl = -1;
-        for (int index = 0; index < position; index++) {
-            if (items[index].getId().equals(id)) {
-                rsl = index;
+        for (Item i: items) {
+            if (i.getId().equals(id)) {
+                rsl = items.indexOf(i);
                 break;
             }
         }
@@ -46,16 +43,16 @@ public class Tracker {
      */
     public Item add(Item item) {
         item.setId(this.generateId());
-        items[position++] = item;
+        items.add(item);
         return item;
     }
 
     /**
      * Method return all non-null items(all items before this.position) from the internal storage
-     * @return arrays of items from the storage before this.position
+     * @return List of items from the storage before this.position
      */
-    public Item[] findAll() {
-        return  Arrays.copyOf(this.items, this.position);
+    public List<Item> findAll() {
+        return items;
     }
 
     /**
@@ -65,26 +62,22 @@ public class Tracker {
      */
     public Item findById(String id) {
         int index = indexOf(id);
-        return index != -1 ? items[index] : null;
+        return index != -1 ? items.get(index) : null;
     }
 
     /**
      * Method search for all items with a given name
      * @param key to be found
-     * @return array of found items, if no items found return zero length array
+     * @return List of found items, if no items found return zero length array
      */
-    public Item[] findByName(String key) {
-        Item[] itemsWithName = new Item[this.position];
-        int size = 0;
-        for (int i = 0; i < this.position; i++ ) {
-            Item current = this.items[i];
+    public List<Item> findByName(String key) {
+        List<Item> itemsWithName = new ArrayList<>();
+        for (Item current: items) {
             if (current != null && (current.getName().equals(key))) {
-                itemsWithName[size] = current;
-                size++;
+                itemsWithName.add(current);
             }
         }
-        itemsWithName = Arrays.copyOf(itemsWithName, size);
-        return  itemsWithName;
+        return itemsWithName;
     }
 
     /**
@@ -99,7 +92,7 @@ public class Tracker {
             return false;
         }
         item.setId(id);
-        items[index] = item;
+        items.set(index, item);
         return true;
     }
 
@@ -113,9 +106,7 @@ public class Tracker {
         if (index == -1) {
             return false;
         }
-        System.arraycopy(items, (index + 1), items, index, (position - index - 1));
-        items[position - 1] = null;
-        position--;
+        items.remove(index);
         return true;
     }
 }

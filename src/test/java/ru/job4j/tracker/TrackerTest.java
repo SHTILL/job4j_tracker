@@ -8,6 +8,7 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.*;
 
 import java.util.Arrays;
+import java.util.List;
 
 public class TrackerTest {
     @Test
@@ -43,17 +44,17 @@ public class TrackerTest {
             tracker.add(addedItems[i]);
         }
 
-        Item[] result = tracker.findAll();
-        assertEquals(result.length, addedItems.length);
+        List<Item> result = tracker.findAll();
+        assertEquals(result.size(), addedItems.length);
 
         for (int i = 0; i < itemsNames.length; i++) {
             int j = 0;
-            for (j = 0; j < result.length; j++) {
-                if (result[j].getName().equals(itemsNames[i])) {
+            for (j = 0; j < result.size(); j++) {
+                if (result.get(j).getName().equals(itemsNames[i])) {
                     break;
                 }
             }
-            if (j == result.length) {
+            if (j == result.size()) {
                 Assert.fail();
             }
         }
@@ -70,10 +71,10 @@ public class TrackerTest {
         for (int i = 0; i < addedItems.length; i++) {
             tracker.add(addedItems[i]);
         }
-        Item[] result = tracker.findByName("test0");
-        assertEquals(2, result.length);
-        assertEquals("test0", result[0].getName());
-        assertEquals("test0", result[1].getName());
+        List<Item> result = tracker.findByName("test0");
+        assertEquals(2, result.size());
+        assertEquals("test0", result.get(0).getName());
+        assertEquals("test0", result.get(1).getName());
     }
 
     @Test
@@ -87,8 +88,8 @@ public class TrackerTest {
         for (int i = 0; i < addedItems.length; i++) {
             tracker.add(addedItems[i]);
         }
-        Item[] result = tracker.findByName("test3");
-        assertEquals(0, result.length);
+        List<Item> result = tracker.findByName("test3");
+        assertEquals(0, result.size());
     }
 
     @Test
@@ -99,11 +100,11 @@ public class TrackerTest {
         String idSaved = saved.getId();
         Item replace = new Item("replaced");
         assertTrue(tracker.replace(idSaved, replace));
-        Item[] result = tracker.findByName("saved");
-        assertEquals(0, result.length);
+        List<Item> result = tracker.findByName("saved");
+        assertEquals(0, result.size());
         result = tracker.findByName("replaced");
-        assertEquals(1, result.length);
-        assertEquals(idSaved, result[0].getId());
+        assertEquals(1, result.size());
+        assertEquals(idSaved, result.get(0).getId());
     }
 
     @Test
@@ -115,11 +116,11 @@ public class TrackerTest {
         String idFake = "123";
         Item replace = new Item("replaced");
         assertFalse(tracker.replace(idFake, replace));
-        Item[] result = tracker.findByName("saved");
-        assertEquals(1, result.length);
-        assertEquals(idSaved, result[0].getId());
+        List<Item> result = tracker.findByName("saved");
+        assertEquals(1, result.size());
+        assertEquals(idSaved, result.get(0).getId());
         result = tracker.findByName("replaced");
-        assertEquals(0, result.length);
+        assertEquals(0, result.size());
     }
 
     @Test
