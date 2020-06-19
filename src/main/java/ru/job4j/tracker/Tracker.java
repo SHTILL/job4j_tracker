@@ -27,9 +27,10 @@ public class Tracker {
      */
     private int indexOf(String id) {
         int rsl = -1;
-        for (Item i: items) {
-            if (i.getId().equals(id)) {
-                rsl = items.indexOf(i);
+        for (int index = 0; index < items.size(); index++) {
+            Item cur = items.get(index);
+            if (cur.getId().equals(id)) {
+                rsl = index;
                 break;
             }
         }
@@ -73,7 +74,7 @@ public class Tracker {
     public List<Item> findByName(String key) {
         List<Item> itemsWithName = new ArrayList<>();
         for (Item current: items) {
-            if (current != null && (current.getName().equals(key))) {
+            if (current.getName().equals(key)) {
                 itemsWithName.add(current);
             }
         }
