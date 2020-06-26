@@ -26,6 +26,18 @@ public class Item {
         this.name = name;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        Item i = (Item)obj;
+        if (this == i) {
+            return true;
+        }
+        return this.name.equals(i.getName());
+    }
+
     public String toString() {
         return "\"" + this.name + "\" id(" +  this.id + ")";
     }
