@@ -9,24 +9,18 @@ public class LexSort implements Comparator<String> {
         int leftNum  = 0;
         String[] leftNumbers = left.split("[.]");
         String[] rightNumbers = right.split("[.]");
-        for (int i=0; i<Math.min(leftNumbers.length, rightNumbers.length); i++) {
-            try {
-                leftNum  = Integer.parseInt(leftNumbers[i]);
-            } catch (Exception e) {
-                leftNum  = Integer.MAX_VALUE;
-            }
-
-            try {
-                rightNum  = Integer.parseInt(rightNumbers[i]);
-            } catch (Exception e) {
-                rightNum = Integer.MAX_VALUE;
-            }
-
-            int rsl = Integer.compare(leftNum, rightNum);
-            if (rsl != 0) {
-                return rsl;
-            }
+        try {
+            leftNum  = Integer.parseInt(leftNumbers[0]);
+        } catch (Exception e) {
+            leftNum  = Integer.MIN_VALUE;
         }
-        return 0;
+
+        try {
+            rightNum  = Integer.parseInt(rightNumbers[0]);
+        } catch (Exception e) {
+            rightNum = Integer.MIN_VALUE;
+        }
+
+        return Integer.compare(leftNum, rightNum);
     }
 }
