@@ -14,12 +14,6 @@ public class DepDescComp implements Comparator<String> {
             return rsl;
         }
 
-        for (int i=1; i<Math.min(leftNames.length, rightNames.length); i++) {
-            rsl = leftNames[i].compareTo(rightNames[i]);
-            if (rsl != 0) {
-                return rsl;
-            }
-        }
-        return leftNames.length - rightNames.length;
+        return depNamesLeft.compareTo(depNamesRight);
     }
 }
