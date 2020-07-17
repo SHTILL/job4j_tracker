@@ -18,15 +18,15 @@ public class SchoolTest {
         students.add(new Student("Lucky", 50));
         students.add(new Student("Unlucky", 49));
 
-        List<Student> classA = students.stream().filter(x -> x.getScore() >= 70).collect(Collectors.toList());
+        List<Student> classA = School.collect(students, x -> x.getScore() >= 70);
         System.out.println("class A:");
         classA.stream().map(Student::getSurname).forEach(System.out::println);
 
-        List<Student> classB = students.stream().filter(x -> x.getScore() >= 50 && x.getScore() < 70).collect(Collectors.toList());
+        List<Student> classB = School.collect(students, x -> x.getScore() >= 50 && x.getScore() < 70);
         System.out.println("class B:");
         classB.stream().map(Student::getSurname).forEach(System.out::println);
 
-        List<Student> classV = students.stream().filter(x -> x.getScore() < 50).collect(Collectors.toList());
+        List<Student> classV = School.collect(students, x -> x.getScore() < 50);
         System.out.println("class V:");
         classV.stream().map(Student::getSurname).forEach(System.out::println);
 
