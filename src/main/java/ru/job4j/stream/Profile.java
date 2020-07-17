@@ -14,12 +14,4 @@ public class Profile {
     public Address getAddress () {
         return address;
     }
-
-    static public List<Address> collect(List<Profile> profiles) {
-        return profiles.stream().map(Profile::getAddress).collect(Collectors.toList());
-    }
-
-    static public List<Address> collectUniqueAndSorted(List<Profile> profiles) {
-        return profiles.stream().map(Profile::getAddress).sorted(Address::compareTo).distinct().collect(Collectors.toList());
-    }
 }
