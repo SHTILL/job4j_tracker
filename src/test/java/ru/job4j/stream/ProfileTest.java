@@ -17,4 +17,15 @@ public class ProfileTest {
         addresses.forEach(System.out::println);
     }
 
+    @Test
+    public void whenGetUniqueAddresses (){
+        List<Profile> profiles = new ArrayList<>();
+        profiles.add(new Profile(new Address("SPb", "Basseinaya",13, 5)));
+        profiles.add(new Profile(new Address("Moskow", "Chernaya",666, 13)));
+        profiles.add(new Profile(new Address("SPb", "Basseinaya",13, 5)));
+
+        List<Address> addresses = Profile.collectUniqueAndSorted(profiles);
+        addresses.forEach(System.out::println);
+    }
+
 }
