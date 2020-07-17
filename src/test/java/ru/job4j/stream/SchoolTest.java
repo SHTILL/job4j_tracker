@@ -5,8 +5,10 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
+import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.*;
 
 public class SchoolTest {
@@ -42,5 +44,16 @@ public class SchoolTest {
                                             new Student("Zamyatin", 30),
                                             new Student("Unlucky", 49));
         assertTrue(classV.containsAll(expected));
+    }
+
+    @Test
+    public void whenConvertToMap() {
+        Map<String, Student> studentsMap = School.collect(students);
+        Map<String, Student> expected = Map.of( "Petrov", new Student("Petrov", 15),
+                                                "CleverGuy", new Student("CleverGuy", 75),
+                                                "Zamyatin", new Student("Zamyatin", 30),
+                                                "Lucky", new Student("Lucky", 50),
+                                                "Unlucky", new Student("Unlucky", 49));
+        assertThat(studentsMap, is(expected));
     }
 }
