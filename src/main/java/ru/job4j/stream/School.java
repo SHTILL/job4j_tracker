@@ -12,6 +12,6 @@ public class School {
     }
 
     public static Map<String, Student> collect(List<Student> students) {
-        return students.stream().distinct().collect(Collectors.toMap(Student::getSurname, s -> s));
+        return students.stream().collect(Collectors.toMap(Student::getSurname, student -> student, (student, student2) ->student));
     }
 }

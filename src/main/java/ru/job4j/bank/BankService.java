@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Stream;
 
 public class BankService {
     private Map<User, List<Account>> users = new HashMap<>();
