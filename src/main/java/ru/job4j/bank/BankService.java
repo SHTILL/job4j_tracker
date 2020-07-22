@@ -24,24 +24,19 @@ public class BankService {
     }
 
     public User findByPassport(String passport) {
-        for (User u: users.keySet()) {
-            if (u.getPassport().equals(passport)) {
-                return u;
-            }
-        }
-        return null;
+        return users.keySet().stream()
+                            .filter(e -> e.equals(new User(passport, "")))
+                            .findFirst()
+                            .orElse(null);
     }
 
     public Account findByRequisite(String passport, String requisite) {
-        List<Account> accounts = users.get(new User(passport, ""));
-        if (accounts != null) {
-            for (Account a: accounts) {
-                if (a.getRequisite().equals(requisite)) {
-                        return a;
-                }
-            }
-        }
-        return null;
+        return users.entrySet().stream()
+                                .filter(e -> e.getKey().equals(new User(passport, "")))
+                                .flatMap(e -> e.getValue().stream())
+                                .filter(e -> e.getRequisite().equals(requisite))
+                                .findFirst()
+                                .orElse(null);
     }
 
     public boolean transferMoney(String srcPassport, String srcRequisite,
@@ -54,8 +49,16 @@ public class BankService {
         if (destAccount == null) {
             return false;
         }
-        srcAccount.setBalance(srcAccount.getBalance() - amount);
-        destAccount.setBalance(destAccount.getBalance() + amount);
+        users.entrySet().stream()
+                .filter(e -> e.getKey().equals(new User(srcPassport, "")))
+                .flatMap(e -> e.getValue().stream())
+                .filter(e -> e.getRequisite().equals(srcRequisite))
+                .forEach(e -> e.setBalance(e.getBalance() - amount));
+        users.entrySet().stream()
+                .filter(e -> e.getKey().equals(new User(destPassport, "")))
+                .flatMap(e -> e.getValue().stream())
+                .filter(e -> e.getRequisite().equals(destRequisite))
+                .forEach(e -> e.setBalance(e.getBalance() + amount));
         return true;
     }
 }
