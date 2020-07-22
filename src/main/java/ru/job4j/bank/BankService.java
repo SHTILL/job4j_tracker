@@ -49,16 +49,8 @@ public class BankService {
         if (destAccount == null) {
             return false;
         }
-        users.entrySet().stream()
-                .filter(e -> e.getKey().equals(new User(srcPassport, "")))
-                .flatMap(e -> e.getValue().stream())
-                .filter(e -> e.getRequisite().equals(srcRequisite))
-                .forEach(e -> e.setBalance(e.getBalance() - amount));
-        users.entrySet().stream()
-                .filter(e -> e.getKey().equals(new User(destPassport, "")))
-                .flatMap(e -> e.getValue().stream())
-                .filter(e -> e.getRequisite().equals(destRequisite))
-                .forEach(e -> e.setBalance(e.getBalance() + amount));
+        srcAccount.setBalance(srcAccount.getBalance() - amount);
+        destAccount.setBalance(destAccount.getBalance() + amount);
         return true;
     }
 }
