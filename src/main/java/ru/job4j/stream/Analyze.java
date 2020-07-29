@@ -19,6 +19,7 @@ public class Analyze {
         @Override
         public String toString() {
             return "Score:" + scoreSum + " Num:" + num + System.lineSeparator();
+
         }
     }
 
