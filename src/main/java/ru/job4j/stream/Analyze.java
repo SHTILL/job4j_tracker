@@ -34,7 +34,7 @@ public class Analyze {
             return stream.flatMap(e ->e.getSubjects().stream())
                     .collect(Collectors.toMap(Subject::getName,
                     s -> new SubjectScore(s.getScore(),1),
-                    (s1,s2)->new SubjectScore(s1.scoreSum +s2.scoreSum, s1.num +s2.num)))
+                    (s1,s2)->new SubjectScore(s1.scoreSum+s2.scoreSum, s1.num+s2.num)))
                     .entrySet()
                     .stream()
                     .peek((e) -> e.getValue().scoreSum = e.getValue().scoreSum / e.getValue().num);
