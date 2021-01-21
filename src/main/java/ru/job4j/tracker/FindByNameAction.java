@@ -9,7 +9,7 @@ public class FindByNameAction implements UserAction {
     }
 
     @Override
-    public boolean execute(Input input, Tracker tracker) {
+    public boolean execute(Input input, Store tracker) {
         String name = input.askStr("Enter name: ");
         List<Item> found = tracker.findByName(name);
         if (found.size() == 0) {

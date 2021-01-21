@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class StartUI {
-    public void init(Input input, Tracker tracker, List<UserAction> actions) {
+    public void init(Input input, Store tracker, List<UserAction> actions) {
         boolean run = true;
 
         while (run) {
@@ -26,7 +26,7 @@ public class StartUI {
     public static void main(String[] args) {
         Input input = new ConsoleInput();
         Input validate = new ValidateInput(input);
-        Tracker tracker = new Tracker();
+        Store tracker = new SqlTracker();
         UserAction[] actions = {
                 new CreateAction(),
                 new ShowAllAction(),

@@ -3,17 +3,15 @@ package ru.job4j.tracker;
 import org.junit.Assert;
 import org.junit.Test;
 
-import static java.util.function.Predicate.not;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.*;
 
-import java.util.Arrays;
 import java.util.List;
 
-public class TrackerTest {
+public class MemTrackerTest {
     @Test
     public void whenAddNewItemThenTrackerHasSameItem() {
-        Tracker tracker = new Tracker();
+        MemTracker tracker = new MemTracker();
         Item item = new Item("test1");
         tracker.add(item);
         Item result = tracker.findById(item.getId());
@@ -24,7 +22,7 @@ public class TrackerTest {
 
     @Test
     public void whenNotFoundById() {
-        Tracker tracker = new Tracker();
+        MemTracker tracker = new MemTracker();
         Item item = new Item("test1");
         tracker.add(item);
         Item result = tracker.findById(item.getId()+"5");
@@ -33,7 +31,7 @@ public class TrackerTest {
 
     @Test
     public void whenRequestAll() {
-        Tracker tracker = new Tracker();
+        MemTracker tracker = new MemTracker();
         Item[] addedItems = new Item[3];
         String[] itemsNames = new String[3];
 
@@ -62,7 +60,7 @@ public class TrackerTest {
 
     @Test
     public void whenRequestByName() {
-        Tracker tracker = new Tracker();
+        MemTracker tracker = new MemTracker();
         Item[] addedItems = new Item[3];
         addedItems[0] = new Item("test0");
         addedItems[1] = new Item("test1");
@@ -79,7 +77,7 @@ public class TrackerTest {
 
     @Test
     public void whenNotFoundByName() {
-        Tracker tracker = new Tracker();
+        MemTracker tracker = new MemTracker();
         Item[] addedItems = new Item[3];
         addedItems[0] = new Item("test0");
         addedItems[1] = new Item("test1");
@@ -94,7 +92,7 @@ public class TrackerTest {
 
     @Test
     public void whenReplacedWithoutErrors() {
-        Tracker tracker = new Tracker();
+        MemTracker tracker = new MemTracker();
         Item saved = new Item("saved");
         tracker.add(saved);
         String idSaved = saved.getId();
@@ -109,7 +107,7 @@ public class TrackerTest {
 
     @Test
     public void whenReplacedNotFound() {
-        Tracker tracker = new Tracker();
+        MemTracker tracker = new MemTracker();
         Item saved = new Item("saved");
         tracker.add(saved);
         String idSaved = saved.getId();
@@ -125,7 +123,7 @@ public class TrackerTest {
 
     @Test
     public void whenDelete() {
-        Tracker tracker = new Tracker();
+        MemTracker tracker = new MemTracker();
         Item bug = new Item("Bug");
         tracker.add(bug);
         String id = bug.getId();
