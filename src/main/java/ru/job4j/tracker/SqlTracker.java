@@ -11,13 +11,10 @@ public class SqlTracker implements Store {
 
     public SqlTracker() {
         this.init();
-        try {
-            Statement stmt = cn.createStatement();
-            //clear all records because previous Tracker version did so
-            stmt.execute("delete from items");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+    }
+
+    public SqlTracker(Connection connection) {
+        this.cn = connection;
     }
 
     private void init() {
