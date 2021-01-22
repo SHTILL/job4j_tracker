@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class MemTracker {
+public class MemTracker implements Store {
     /**
      * Массив для хранения заявок.
      */
@@ -109,5 +109,10 @@ public class MemTracker {
         }
         items.remove(index);
         return true;
+    }
+
+    @Override
+    public void close() {
+
     }
 }

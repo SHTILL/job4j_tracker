@@ -2,6 +2,7 @@ package ru.job4j.tracker;
 
 import java.io.InputStream;
 import java.sql.*;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -35,7 +36,9 @@ public class SqlTracker implements Store {
     private List<Item> getItemsList(ResultSet res) throws SQLException {
         List<Item> list = new ArrayList<>();
         while (res.next()) {
-            list.add(new Item(res.getString("name")));
+            Item item = new Item(res.getString("name"));
+            item.setId(res.getString("id"));
+            list.add(item);
         }
         return list;
     }
@@ -49,9 +52,10 @@ public class SqlTracker implements Store {
 
     @Override
     public Item add(Item item) {
-        try {
-            Statement stmt = cn.createStatement();
-            stmt.execute("insert into items(name) values('" + item.getName() + "');");
+        try (PreparedStatement stmt = cn.prepareStatement("insert into items(name) values(?);")) {
+            stmt.setString(1, item.getName());
+            if (stmt.executeUpdate() == 0)
+                return null;
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
@@ -61,9 +65,11 @@ public class SqlTracker implements Store {
 
     @Override
     public boolean replace(String id, Item item) {
-        try {
-            Statement stmt = cn.createStatement();
-            stmt.execute("update items set name = '" + item.getName() + "' where id = " + id + ";");
+        try (PreparedStatement stmt = cn.prepareStatement("update items set name = ? where id = ?;")) {
+            stmt.setString(1, item.getName());
+            stmt.setInt(2, Integer.parseInt(id));
+            if (stmt.executeUpdate() == 0)
+                return false;
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
@@ -73,9 +79,10 @@ public class SqlTracker implements Store {
 
     @Override
     public boolean delete(String id) {
-        try {
-            Statement stmt = cn.createStatement();
-            stmt.execute("delete from items where id = " + id + ";");
+        try (PreparedStatement stmt = cn.prepareStatement("delete from items where id = ?;")) {
+            stmt.setInt(1, Integer.parseInt(id));
+            if (stmt.executeUpdate() == 0)
+                return false;
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
@@ -86,9 +93,8 @@ public class SqlTracker implements Store {
     @Override
     public List<Item> findAll() {
         List<Item> list = null;
-        try {
-            Statement stmt = cn.createStatement();
-            ResultSet res = stmt.executeQuery("select * from items");
+        try (Statement stmt = cn.createStatement()) {
+            ResultSet res = stmt.executeQuery("select * from items;");
             list = getItemsList(res);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -99,9 +105,9 @@ public class SqlTracker implements Store {
     @Override
     public List<Item> findByName(String key) {
         List<Item> list = null;
-        try {
-            Statement stmt = cn.createStatement();
-            ResultSet res = stmt.executeQuery("select * from items where name = '" + key + "';");
+        try (PreparedStatement stmt = cn.prepareStatement("select * from items where name = ?;")) {
+            stmt.setString(1, key);
+            ResultSet res = stmt.executeQuery();
             list = getItemsList(res);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -111,11 +117,13 @@ public class SqlTracker implements Store {
 
     @Override
     public Item findById(String id) {
-        try {
-            Statement stmt = cn.createStatement();
-            ResultSet res = stmt.executeQuery("select * from items where id = " + id + ";");
+        try (PreparedStatement stmt = cn.prepareStatement("select * from items where id = ?;")) {
+            stmt.setInt(1, Integer.parseInt(id));
+            ResultSet res = stmt.executeQuery();
             if (res.next()) {
-                return new Item(res.getString("name"));
+                Item item = new Item(res.getString("name"));
+                item.setId(res.getString("id"));
+                return item;
             }
         } catch (SQLException e) {
             e.printStackTrace();
