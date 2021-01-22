@@ -5,9 +5,20 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+import java.util.Random;
 
 public class SqlTracker implements Store {
     private Connection cn;
+
+    /**
+     * Метод генерирует уникальный ключ для заявки.
+     * Так как у заявки нет уникальности полей, имени и описание. Для идентификации нам нужен уникальный ключ.
+     * @return Уникальный ключ.
+     */
+    private String generateId() {
+        Random rm = new Random();
+        return String.valueOf(rm.nextInt() + (int)System.currentTimeMillis());
+    }
 
     public SqlTracker() {
         this.init();
@@ -51,8 +62,11 @@ public class SqlTracker implements Store {
 
     @Override
     public Item add(Item item) {
-        try (PreparedStatement stmt = cn.prepareStatement("insert into items(name) values(?);")) {
-            stmt.setString(1, item.getName());
+        try (PreparedStatement stmt = cn.prepareStatement("insert into items(id,name) values(?,?);")) {
+            String id = this.generateId();
+            item.setId(id);
+            stmt.setInt(1, Integer.parseInt(id));
+            stmt.setString(2, item.getName());
             if (stmt.executeUpdate() == 0)
                 return null;
         } catch (SQLException e) {

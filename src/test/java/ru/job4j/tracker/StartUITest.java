@@ -61,7 +61,7 @@ public class StartUITest {
     }
 
     @Test
-    public void whenCheckOutput() {
+    public void whenCheckOutput() throws Exception {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         PrintStream def = System.out;
         System.setOut(new PrintStream(out));
@@ -78,7 +78,7 @@ public class StartUITest {
     }
 
     @Test
-    public void whenFindByNameFound() {
+    public void whenFindByNameFound() throws Exception {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         PrintStream def = System.out;
         System.setOut(new PrintStream(out));
@@ -95,7 +95,7 @@ public class StartUITest {
     }
 
     @Test
-    public void whenFindByNameNotFound() {
+    public void whenFindByNameNotFound() throws Exception {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         PrintStream def = System.out;
         System.setOut(new PrintStream(out));

@@ -14,13 +14,10 @@ public class ConnectionRollback {
      * Create connection with autocommit=false mode and rollback call, when conneciton is closed.
      * @param connection connection.
      * @return Connection object.
+     * @throws SQLException possible exception.
      */
-    public static Connection create(Connection connection) {
-        try {
-            connection.setAutoCommit(false);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+    public static Connection create(Connection connection) throws SQLException {
+        connection.setAutoCommit(false);
         return (Connection) Proxy.newProxyInstance(
                 ConnectionRollback.class.getClassLoader(),
                 new Class[] { Connection.class },
