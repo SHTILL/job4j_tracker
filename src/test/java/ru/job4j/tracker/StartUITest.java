@@ -84,7 +84,6 @@ public class StartUITest {
         System.setOut(new PrintStream(out));
         Store tracker = new SqlTracker(ConnectionRollback.create(this.init()));
         Item item = new Item("fix bug");
-        item.setId("0");
         tracker.add(item);
         FindByNameAction act = new FindByNameAction();
         act.execute(new StubInput(new String[] {"fix bug"}), tracker);
