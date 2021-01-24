@@ -1,11 +1,11 @@
 package ru.job4j.tracker;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
@@ -63,28 +63,19 @@ public class SqlTrackerTest {
     public void whenRequestAll() throws Exception {
         try (Store tracker = new SqlTracker(ConnectionRollback.create(this.init()))) {
             Item[] addedItems = new Item[3];
-            String[] itemsNames = new String[3];
+            List<String> itemsNames = new ArrayList<>();
 
             for (int i = 0; i < addedItems.length; i++) {
                 String name = "test" + i;
-                itemsNames[i] = name;
+                itemsNames.add(name);
                 addedItems[i] = new Item(name);
                 tracker.add(addedItems[i]);
             }
 
             List<Item> result = tracker.findAll();
-            assertEquals(result.size(), addedItems.length);
-
-            for (String itemsName : itemsNames) {
-                int j = 0;
-                for (j = 0; j < result.size(); j++) {
-                    if (result.get(j).getName().equals(itemsName)) {
-                        break;
-                    }
-                }
-                if (j == result.size()) {
-                    Assert.fail();
-                }
+            assertEquals(addedItems.length, result.size());
+            for (Item item : result) {
+                assertTrue(itemsNames.contains(item.getName()));
             }
         }
     }

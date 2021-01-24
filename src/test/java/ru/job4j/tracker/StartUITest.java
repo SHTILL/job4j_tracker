@@ -70,10 +70,10 @@ public class StartUITest {
         tracker.add(item);
         ShowAllAction act = new ShowAllAction();
         act.execute(new StubInput(new String[] {}), tracker);
-        String expect = new StringJoiner(System.lineSeparator(), "", "(")
-                .add("Item0: \"" + item.getName() + "\" id")
+        String expect = new StringJoiner(System.lineSeparator(), "", System.lineSeparator())
+                .add("Item0: \"" + item.getName() + "\" id(" + item.getId() + ")")
                 .toString();
-        assertTrue(new String(out.toByteArray()).contains(expect));
+        assertTrue(new String(out.toByteArray()).equals(expect));
         System.setOut(def);
     }
 
@@ -87,10 +87,10 @@ public class StartUITest {
         tracker.add(item);
         FindByNameAction act = new FindByNameAction();
         act.execute(new StubInput(new String[] {"fix bug"}), tracker);
-        String expect = new StringJoiner(System.lineSeparator(), "", "(")
-                .add("Item0: \"" + item.getName() + "\" id")
+        String expect = new StringJoiner(System.lineSeparator(), "", System.lineSeparator())
+                .add("Item0: \"" + item.getName() + "\" id(" + item.getId() + ")")
                 .toString();
-        assertTrue(new String(out.toByteArray()).contains(expect));
+        assertTrue(new String(out.toByteArray()).equals(expect));
         System.setOut(def);
     }
 
