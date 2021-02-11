@@ -1,0 +1,66 @@
+1. Стек вызовов.
+Снял несколько thread dump-ов при помощи команды(пример thread dump-а добавил в репу):
+jstack -l <StartUI_pid>
+По нему видно что основной поток приложения заблокирован в Native методе readBytes.
+Стек вызовов идет от метода ConsoleInput.askStr приложение ожидает ввода команды от пользователя.
+В этом месте приложение находится подавляющее большиснство времени.
+
+2. После запуска приложения
+jmap -histo <StartUI_pid> показывает потребление памяти 4,6 Мб при созданных 71048.
+В то время как jmap -histo <StartUI_pid> | grep ru.job4j выводит:
+ 377:             1             48  [Lru.job4j.tracker.UserAction;
+ 651:             1             16  ru.job4j.tracker.ConsoleInput
+ 652:             1             16  ru.job4j.tracker.CreateAction
+ 653:             1             16  ru.job4j.tracker.DeleteAction
+ 654:             1             16  ru.job4j.tracker.ExitAction
+ 655:             1             16  ru.job4j.tracker.FindByIdAction
+ 656:             1             16  ru.job4j.tracker.FindByNameAction
+ 657:             1             16  ru.job4j.tracker.MemTracker
+ 658:             1             16  ru.job4j.tracker.ReplaceAction
+ 659:             1             16  ru.job4j.tracker.ShowAllAction
+ 660:             1             16  ru.job4j.tracker.StartUI
+ 661:             1             16  ru.job4j.tracker.ValidateInput
+
+Т.е. под данные классов реализующих логику работы приложения выделено всего 224 байта.
+
+jstat -gc <StartUI_pid> выводит:
+S0C    S1C    S0U    S1U      EC       EU        OC         OU       MC     MU    CCSC   CCSU   YGC     YGCT    FGC    FGCT    CGC    CGCT     GCT   
+0.0    0.0    0.0    0.0   14336.0   3072.0   112640.0     0.0      0.0    0.0    0.0    0.0        0    0.000   0      0.000   0      0.000    0.000
+
+Отсуда видно, что сборка мусора еще ни разу не производилась(GCT = 0).
+Eden не заполнялся до максимального объема( EU = 3072.0, EC = 14336.0 ).
+
+3. После добавления Item
+jmap -histo <StartUI_pid> | grep ru.job4j
+ 381:             1             48  [Lru.job4j.tracker.UserAction;
+ 530:             1             24  ru.job4j.tracker.Item
+ 656:             1             16  ru.job4j.tracker.ConsoleInput
+ 657:             1             16  ru.job4j.tracker.CreateAction
+ 658:             1             16  ru.job4j.tracker.DeleteAction
+ 659:             1             16  ru.job4j.tracker.ExitAction
+ 660:             1             16  ru.job4j.tracker.FindByIdAction
+ 661:             1             16  ru.job4j.tracker.FindByNameAction
+ 662:             1             16  ru.job4j.tracker.MemTracker
+ 663:             1             16  ru.job4j.tracker.ReplaceAction
+ 664:             1             16  ru.job4j.tracker.ShowAllAction
+ 665:             1             16  ru.job4j.tracker.StartUI
+ 666:             1             16  ru.job4j.tracker.ValidateInput
+Видим что 1 объект Item занимет 24 байта.
+В jstat -gc <StartUI_pid> изменений не видно так как там все цифры приведены в KB.
+
+3. После удаления Item.
+jmap -histo <StartUI_pid> | grep ru.job4j
+ 381:             1             48  [Lru.job4j.tracker.UserAction;
+ 530:             1             24  ru.job4j.tracker.Item
+ 656:             1             16  ru.job4j.tracker.ConsoleInput
+ 657:             1             16  ru.job4j.tracker.CreateAction
+ 658:             1             16  ru.job4j.tracker.DeleteAction
+ 659:             1             16  ru.job4j.tracker.ExitAction
+ 660:             1             16  ru.job4j.tracker.FindByIdAction
+ 661:             1             16  ru.job4j.tracker.FindByNameAction
+ 662:             1             16  ru.job4j.tracker.MemTracker
+ 663:             1             16  ru.job4j.tracker.ReplaceAction
+ 664:             1             16  ru.job4j.tracker.ShowAllAction
+ 665:             1             16  ru.job4j.tracker.StartUI
+ 666:             1             16  ru.job4j.tracker.ValidateInput
+Т.е. Item остается живой до сборки мусора.
