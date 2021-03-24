@@ -1,6 +1,16 @@
 package ru.job4j.tracker;
 
 public class ReplaceAction implements UserAction {
+    private Output output;
+
+    public ReplaceAction() {
+        output = new ConsoleOutput();
+    }
+
+    public ReplaceAction(Output output) {
+        this.output = output;
+    }
+
     @Override
     public String name() {
         return "=== Edit Item ====";
@@ -12,9 +22,9 @@ public class ReplaceAction implements UserAction {
         String name = input.askStr("Enter new name: ");
         Item item = new Item(name);
         if (tracker.replace(id, item)) {
-            System.out.println("Item was edited successfully");
+            output.println("Item was edited successfully");
         } else {
-            System.out.println("Error. Probably wrong id was entered.");
+            output.println("Error. Probably wrong id was entered.");
         }
         return true;
     }
