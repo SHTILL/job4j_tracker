@@ -1,20 +1,23 @@
-package ru.job4j.tracker;
+package ru.job4j.hibernate;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.util.Objects;
 
 @Entity
 @Table(name = "items")
-public class HibernateItem {
+public class Item {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String name;
+    private String description;
+    private Timestamp created;
 
-    public HibernateItem() {
+    public Item() {
     }
 
-    public HibernateItem(String name) {
+    public Item(String name) {
         this.name = name;
     }
 
@@ -34,11 +37,27 @@ public class HibernateItem {
         this.name = name;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Timestamp getCreated() {
+        return created;
+    }
+
+    public void setCreated(Timestamp created) {
+        this.created = created;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        HibernateItem item = (HibernateItem) o;
+        Item item = (Item) o;
         return Objects.equals(id, item.id) &&
                 Objects.equals(name, item.name);
     }
