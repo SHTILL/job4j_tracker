@@ -17,7 +17,7 @@ public class MemTracker implements Store {
      */
     private String generateId() {
         Random rm = new Random();
-        return String.valueOf(rm.nextLong() + System.currentTimeMillis());
+        return String.valueOf((int) (rm.nextLong() + System.currentTimeMillis()));
     }
 
     /**

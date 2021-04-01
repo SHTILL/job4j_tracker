@@ -73,7 +73,7 @@ public class StartUITest {
         String expect = new StringJoiner(System.lineSeparator(), "", System.lineSeparator())
                 .add("Item0: \"" + item.getName() + "\" id(" + item.getId() + ")")
                 .toString();
-        assertTrue(new String(out.toByteArray()).equals(expect));
+        assertThat(new String(out.toByteArray()), is(expect));
         System.setOut(def);
     }
 

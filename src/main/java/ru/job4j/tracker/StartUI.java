@@ -26,7 +26,7 @@ public class StartUI {
     public static void main(String[] args) {
         Input input = new ConsoleInput();
         Input validate = new ValidateInput(input);
-        Store tracker = new MemTracker();
+        Store tracker = new HbmTracker();
         UserAction[] actions = {
                 new CreateAction(),
                 new ShowAllAction(),
